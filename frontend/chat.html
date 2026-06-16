@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBot Chat - AI Farming Assistant</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/chat.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <aside class="chat-sidebar">
+            <div class="chat-sidebar-header">
+                <div class="chat-sidebar-brand">
+                    🌾 AgroBot
+                </div>
+                <div class="chat-sidebar-actions">
+                    <button onclick="createNewChat()" title="New Chat">+ New</button>
+                    <button onclick="goToHome()" title="Home">Home</button>
+                </div>
+            </div>
+            
+            <div class="chat-history" id="chatHistory">
+                <!-- Chat history items will be populated here -->
+            </div>
+            
+            <div class="chat-sidebar-footer">
+                <select id="voiceLanguage" class="language-selector" onchange="changeVoiceLanguage(this.value)">
+                    <option value="en-US">English (US)</option>
+                    <option value="hi-IN">हिन्दी</option>
+                    <option value="te-IN">తెలుగు</option>
+                </select>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="chat-header-title">
+                    <h3>AgroBot Assistant</h3>
+                    <p>AI-Powered Smart Farming</p>
+                </div>
+                <div class="chat-header-actions">
+                    <button onclick="toggleDarkMode()" title="Toggle Dark Mode">🌙</button>
+                    <button onclick="clearChat()" title="Clear Chat">Clear</button>
+                    <a href="dashboard.html" class="btn btn-secondary btn-small">Dashboard</a>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be populated here -->
+                <div class="chat-empty">
+                    <div class="chat-empty-icon">🌾</div>
+                    <h3>Welcome to AgroBot</h3>
+                    <p>Ask me about crops, fertilizer, irrigation, pest management, soil health, and more!</p>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-area">
+                <!-- Quick suggestions -->
+                <div class="chat-input-suggestions" id="suggestions">
+                    <button class="suggestion-btn" onclick="sendPredefinedMessage('What crops should I grow this season?')">
+                        Crop Recommendations
+                    </button>
+                    <button class="suggestion-btn" onclick="sendPredefinedMessage('How should I fertilize my soil?')">
+                        Fertilizer Guidance
+                    </button>
+                    <button class="suggestion-btn" onclick="sendPredefinedMessage('What is the best irrigation method?')">
+                        Irrigation Tips
+                    </button>
+                    <button class="suggestion-btn" onclick="sendPredefinedMessage('How do I manage pests naturally?')">
+                        Pest Management
+                    </button>
+                </div>
+
+                <!-- Input Form -->
+                <form class="chat-input-form" onsubmit="handleSendMessage(event)">
+                    <div class="chat-input-field">
+                        <input 
+                            type="text" 
+                            id="messageInput" 
+                            data-i18n-placeholder="chat_placeholder"
+                            placeholder="Ask about crops, fertilizer, irrigation..."
+                            autocomplete="off"
+                        >
+                        <button type="button" class="voice-btn" id="voiceBtn" onclick="toggleVoiceInput()" title="Voice Input">
+                            🎙️
+                        </button>
+                    </div>
+                    <button type="submit" class="send-btn" id="sendBtn">
+                        Send 📤
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/language-manager.js"></script>
+    <script src="js/api-client.js"></script>
+    <script src="js/voice-manager.js"></script>
+
+    <script>
+        // Chat state
+        let currentSessionId = null;
+        let chatHistory = [];
+        let isLoading = false;
+        let isDarkMode = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            currentSessionId = generateUUID();
+            loadChatHistory();
+            setupVoiceManager();
+            languageManager.updatePageLanguage();
+        });
+
+        // Load chat history from localStorage
+        function loadChatHistory() {
+            const saved = getLocalStorage(`chat_${currentSessionId}`, []);
+            chatHistory = saved;
+            renderMessages();
+        }
+
+        // Save chat to localStorage
+        function saveChatHistory() {
+            setLocalStorage(`chat_${currentSessionId}`, chatHistory);
+        }
+
+        // Render all messages
+        function renderMessages() {
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            if (chatHistory.length === 0) {
+                messagesContainer.innerHTML = `
+                    <div class="chat-empty">
+                        <div class="chat-empty-icon">🌾</div>
+                        <h3>Welcome to AgroBot</h3>
+                        <p>Ask me about crops, fertilizer, irrigation, pest management, soil health, and more!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            messagesContainer.innerHTML = '';
+            chatHistory.forEach(msg => {
+                addMessageToDOM(msg.content, msg.role);
+            });
+
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Add message to DOM
+        function addMessageToDOM(content, role) {
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            // Remove empty state if exists
+            const emptyState = messagesContainer.querySelector('.chat-empty');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${role === 'user' ? 'user' : 'assistant'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = role === 'user' ? 'U' : 'A';
+
+            const contentEl = document.createElement('div');
+            contentEl.className = 'message-content';
+            contentEl.textContent = content;
+
+            const timeEl = document.createElement('div');
+            timeEl.className = 'message-time';
+            timeEl.textContent = formatTime(new Date());
+
+            messageEl.appendChild(avatar);
+            contentEl.appendChild(timeEl);
+            messageEl.appendChild(contentEl);
+
+            messagesContainer.appendChild(messageEl);
+
+            // Scroll to bottom
+            setTimeout(() => {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 0);
+        }
+
+        // Handle send message
+        async function handleSendMessage(event) {
+            event.preventDefault();
+            
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+
+            if (!message || isLoading) return;
+
+            // Add user message
+            chatHistory.push({ role: 'user', content: message, timestamp: new Date().toISOString() });
+            addMessageToDOM(message, 'user');
+            input.value = '';
+            
+            saveChatHistory();
+            isLoading = true;
+
+            // Show typing indicator
+            const messagesContainer = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">A</div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            try {
+                const response = await apiClient.sendMessage(message, currentSessionId);
+                
+                if (response.status === 'success') {
+                    const botMessage = response.data.response;
+                    chatHistory.push({ role: 'assistant', content: botMessage, timestamp: new Date().toISOString() });
+                    
+                    // Remove typing indicator
+                    typingDiv.remove();
+                    
+                    addMessageToDOM(botMessage, 'assistant');
+                    saveChatHistory();
+
+                    // Text-to-speech if enabled
+                    if (voiceManager.isSynthesisAvailable()) {
+                        voiceManager.speak(botMessage, getCurrentVoiceLanguage());
+                    }
+                }
+            } catch (error) {
+                console.error('Error sending message:', error);
+                typingDiv.remove();
+                showNotification('Error sending message. Please try again.', 'error');
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Send predefined message
+        function sendPredefinedMessage(message) {
+            document.getElementById('messageInput').value = message;
+            handleSendMessage({ preventDefault: () => {} });
+        }
+
+        // Create new chat
+        function createNewChat() {
+            if (chatHistory.length > 0 && !confirm('Clear current chat?')) return;
+            
+            currentSessionId = generateUUID();
+            chatHistory = [];
+            document.getElementById('chatMessages').innerHTML = `
+                <div class="chat-empty">
+                    <div class="chat-empty-icon">🌾</div>
+                    <h3>New Chat Started</h3>
+                    <p>Ask me about crops, fertilizer, irrigation, pest management, soil health, and more!</p>
+                </div>
+            `;
+            document.getElementById('messageInput').value = '';
+        }
+
+        // Clear chat
+        function clearChat() {
+            if (confirm('Clear all messages in this chat?')) {
+                chatHistory = [];
+                saveChatHistory();
+                renderMessages();
+            }
+        }
+
+        // Go to home
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Setup voice manager
+        function setupVoiceManager() {
+            if (!voiceManager.isRecognitionAvailable()) {
+                document.getElementById('voiceBtn').disabled = true;
+                document.getElementById('voiceBtn').title = 'Voice recognition not available';
+            }
+
+            voiceManager.on('result', (transcript) => {
+                document.getElementById('messageInput').value = transcript;
+            });
+
+            voiceManager.on('listening', (isListening) => {
+                const voiceBtn = document.getElementById('voiceBtn');
+                if (isListening) {
+                    voiceBtn.classList.add('recording');
+                } else {
+                    voiceBtn.classList.remove('recording');
+                }
+            });
+        }
+
+        // Toggle voice input
+        function toggleVoiceInput() {
+            if (!voiceManager.isRecognitionAvailable()) return;
+
+            if (voiceManager.isListening) {
+                voiceManager.stopListening();
+            } else {
+                voiceManager.startListening();
+            }
+        }
+
+        // Change voice language
+        function changeVoiceLanguage(lang) {
+            voiceManager.setLanguage(lang);
+            localStorage.setItem('voiceLanguage', lang);
+        }
+
+        // Get current voice language
+        function getCurrentVoiceLanguage() {
+            return localStorage.getItem('voiceLanguage') || 'en-US';
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            if (isDarkMode) {
+                document.body.style.background = '#1f2937';
+                document.body.style.color = '#f9fafb';
+            } else {
+                document.body.style.background = '#f9fafb';
+                document.body.style.color = '#111827';
+            }
+        }
+
+        // Focus input on load
+        window.addEventListener('load', () => {
+            document.getElementById('messageInput').focus();
+        });
+    </script>
+</body>
+</html>

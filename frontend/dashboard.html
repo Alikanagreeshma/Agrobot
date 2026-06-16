@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBot Dashboard - Farmer Dashboard</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: white; border-bottom: 1px solid #e5e7eb;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">🌾 AgroBot</div>
+            <span style="color: #6b7280;">Dashboard</span>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            <a href="index.html" class="btn btn-secondary btn-small">Home</a>
+            <a href="chat.html" class="btn btn-primary btn-small">Chat</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container" style="padding: 2rem 0;">
+        <h1 style="margin-bottom: 0.5rem;">Farmer Dashboard</h1>
+        <p style="color: #6b7280; margin-bottom: 2rem;">Get comprehensive insights about your farm</p>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-container">
+            <!-- Weather Card -->
+            <div class="dashboard-item weather-card">
+                <div class="dashboard-item-header">
+                    <div class="dashboard-item-title">Today's Weather</div>
+                    <div class="dashboard-item-icon">⛅</div>
+                </div>
+                
+                <div class="dashboard-value">28°C</div>
+                <div class="dashboard-unit">Partly Cloudy</div>
+                
+                <div class="weather-details">
+                    <div class="weather-detail">
+                        <div class="weather-detail-label">Humidity</div>
+                        <div class="weather-detail-value">65%</div>
+                    </div>
+                    <div class="weather-detail">
+                        <div class="weather-detail-label">Wind</div>
+                        <div class="weather-detail-value">12 km/h</div>
+                    </div>
+                    <div class="weather-detail">
+                        <div class="weather-detail-label">Rainfall</div>
+                        <div class="weather-detail-value">0 mm</div>
+                    </div>
+                    <div class="weather-detail">
+                        <div class="weather-detail-label">UV Index</div>
+                        <div class="weather-detail-value">7</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-item-actions">
+                    <button onclick="getWeatherForecast()">7-Day Forecast</button>
+                </div>
+            </div>
+
+            <!-- Crop Suggestions -->
+            <div class="dashboard-item">
+                <div class="dashboard-item-header">
+                    <div class="dashboard-item-title">Crop Suggestions</div>
+                    <div class="dashboard-item-icon">🌱</div>
+                </div>
+                
+                <div class="dashboard-item-content">
+                    <div class="crop-item">
+                        <div class="crop-item-name">Rice</div>
+                        <div class="crop-item-season">Best for Kharif season</div>
+                    </div>
+                    <div class="crop-item">
+                        <div class="crop-item-name">Wheat</div>
+                        <div class="crop-item-season">Best for Rabi season</div>
+                    </div>
+                    <div class="crop-item">
+                        <div class="crop-item-name">Cotton</div>
+                        <div class="crop-item-season">High value crop</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-item-actions">
+                    <button onclick="getCropDetails()">View Details</button>
+                    <button onclick="goToChat('crop recommendations')">Get Advice</button>
+                </div>
+            </div>
+
+            <!-- Soil Information -->
+            <div class="dashboard-item">
+                <div class="dashboard-item-header">
+                    <div class="dashboard-item-title">Soil Health</div>
+                    <div class="dashboard-item-icon">🧪</div>
+                </div>
+                
+                <div class="dashboard-item-content">
+                    <div class="soil-metric">
+                        <div class="soil-metric-label">
+                            <span>pH Level</span>
+                            <span>6.8</span>
+                        </div>
+                        <div class="soil-metric-bar">
+                            <div class="soil-metric-progress" style="width: 68%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="soil-metric">
+                        <div class="soil-metric-label">
+                            <span>Organic Matter</span>
+                            <span>2.5%</span>
+                        </div>
+                        <div class="soil-metric-bar">
+                            <div class="soil-metric-progress" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="soil-metric">
+                        <div class="soil-metric-label">
+                            <span>Nitrogen (N)</span>
+                            <span>High</span>
+                        </div>
+                        <div class="soil-metric-bar">
+                            <div class="soil-metric-progress" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-item-actions">
+                    <button onclick="getSoilReport()">Full Report</button>
+                    <button onclick="goToChat('soil health')">Ask Expert</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Row -->
+        <div class="dashboard-container">
+            <!-- Irrigation Reminders -->
+            <div class="dashboard-item">
+                <div class="dashboard-item-header">
+                    <div class="dashboard-item-title">Irrigation Reminders</div>
+                    <div class="dashboard-item-icon">💧</div>
+                </div>
+                
+                <ul class="reminder-list">
+                    <li class="reminder-item">
+                        <div class="reminder-icon">✓</div>
+                        <div class="reminder-content">
+                            <div class="reminder-title">Field A - Water Now</div>
+                            <div class="reminder-time">In 2 hours</div>
+                        </div>
+                    </li>
+                    <li class="reminder-item">
+                        <div class="reminder-icon">⏰</div>
+                        <div class="reminder-content">
+                            <div class="reminder-title">Field B - Schedule Due</div>
+                            <div class="reminder-time">Tomorrow at 6 AM</div>
+                        </div>
+                    </li>
+                    <li class="reminder-item urgent">
+                        <div class="reminder-icon">⚠️</div>
+                        <div class="reminder-content">
+                            <div class="reminder-title">Field C - Soil Too Dry</div>
+                            <div class="reminder-time">Urgent</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="dashboard-item-actions">
+                    <button onclick="getIrrigationGuide()">Irrigation Guide</button>
+                </div>
+            </div>
+
+            <!-- Pest Alerts -->
+            <div class="dashboard-item">
+                <div class="dashboard-item-header">
+                    <div class="dashboard-item-title">Pest Alerts</div>
+                    <div class="dashboard-item-icon">🐛</div>
+                </div>
+                
+                <div class="dashboard-item-content">
+                    <div style="padding: 1rem; background: #ecfdf5; border-left: 3px solid #10b981; border-radius: 0.5rem; margin-bottom: 0.75rem;">
+                        <div style="font-weight: 600; color: #065f46; font-size: 0.9rem; margin-bottom: 0.25rem;">No Active Pests</div>
+                        <div style="color: #047857; font-size: 0.85rem;">Your crops are healthy. Continue monitoring.</div>
+                    </div>
+                    
+                    <p style="font-size: 0.9rem; color: #6b7280; margin-top: 1rem;">
+                        <strong>Common pests to watch:</strong>
+                        <br>• Leaf Hoppers
+                        <br>• Stem Borers
+                        <br>• Armyworms
+                    </p>
+                </div>
+
+                <div class="dashboard-item-actions">
+                    <button onclick="getPestManagement()">View All Pests</button>
+                </div>
+            </div>
+
+            <!-- Seasonal Tips -->
+            <div class="dashboard-item">
+                <div class="dashboard-item-header">
+                    <div class="dashboard-item-title">Seasonal Tips</div>
+                    <div class="dashboard-item-icon">📅</div>
+                </div>
+                
+                <div class="dashboard-item-content">
+                    <div style="padding: 1rem; background: #fef3c7; border-left: 3px solid #f59e0b; border-radius: 0.5rem; margin-bottom: 1rem;">
+                        <div style="font-weight: 600; color: #78350f; font-size: 0.9rem; margin-bottom: 0.25rem;">Current Season: Monsoon</div>
+                        <div style="color: #b45309; font-size: 0.85rem;">
+                            Prepare for excess water. Improve drainage systems. Plant water-tolerant varieties.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-item-actions">
+                    <button onclick="getSeasonalAdvice()">Get More Tips</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Conversations -->
+        <div style="margin-top: 2rem;">
+            <h2 style="margin-bottom: 1rem;">Recent Conversations</h2>
+            <div class="card">
+                <ul class="conversation-list">
+                    <li class="conversation-item" onclick="goToChat('rice cultivation')">
+                        <div class="conversation-topic">Rice Cultivation Questions</div>
+                        <div class="conversation-time">2 hours ago</div>
+                        <div class="conversation-preview">Asked about best rice varieties and planting time...</div>
+                    </li>
+                    <li class="conversation-item" onclick="goToChat('fertilizer recommendations')">
+                        <div class="conversation-topic">Fertilizer Recommendations</div>
+                        <div class="conversation-time">Yesterday</div>
+                        <div class="conversation-preview">Got NPK ratio recommendations for cotton field...</div>
+                    </li>
+                    <li class="conversation-item" onclick="goToChat('irrigation system')">
+                        <div class="conversation-topic">Irrigation System Selection</div>
+                        <div class="conversation-time">2 days ago</div>
+                        <div class="conversation-preview">Discussed drip vs sprinkler irrigation benefits...</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, #10b981, #047857); border-radius: 1rem; color: white; text-align: center;">
+            <h3 style="margin-bottom: 1rem;">Ready to Get Started?</h3>
+            <p style="margin-bottom: 2rem; color: rgba(255, 255, 255, 0.9);">Ask AgroBot for personalized farming recommendations</p>
+            <a href="chat.html" class="btn btn-primary" style="background: white; color: #10b981;">
+                Start Chatting 💬
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/api-client.js"></script>
+
+    <script>
+        // Dashboard functions
+        function getWeatherForecast() {
+            showNotification('Weather forecast feature coming soon!', 'info');
+        }
+
+        function getCropDetails() {
+            goToChat('crop recommendations for my region');
+        }
+
+        function getSoilReport() {
+            goToChat('soil health recommendations');
+        }
+
+        function getIrrigationGuide() {
+            goToChat('best irrigation methods');
+        }
+
+        function getPestManagement() {
+            goToChat('pest management strategies');
+        }
+
+        function getSeasonalAdvice() {
+            goToChat('seasonal farming tips');
+        }
+
+        function goToChat(topic) {
+            // Store the topic in sessionStorage
+            sessionStorage.setItem('chatTopic', topic);
+            // Redirect to chat
+            window.location.href = `chat.html?topic=${encodeURIComponent(topic)}`;
+        }
+
+        // Check for URL parameters on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = getURLParams();
+            if (params.topic) {
+                // Topic was passed from somewhere
+                console.log('Loading chat with topic:', params.topic);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌾 Smart Agro Bot (Telugu + Hindi + English)</title>
+<style>
+*{box-sizing:border-box;font-family:"Poppins",sans-serif;}
+body{
+  margin:0;display:flex;height:100vh;
+  background:#e8dfcc;color:#2e2e2e;
+}
+.sidebar{
+  width:260px;background:#2e5d3a;color:white;
+  display:flex;flex-direction:column;padding:25px;
+}
+.sidebar h1{font-size:24px;margin-bottom:5px;}
+.sidebar small{opacity:0.8;}
+.sidebar button{
+  background:#376b44;border:none;color:white;
+  padding:10px 12px;border-radius:8px;margin:10px 0;
+  text-align:left;cursor:pointer;transition:0.3s;
+}
+.sidebar button:hover{background:#4f8a5d;}
+.sidebar .bottom{margin-top:auto;font-size:14px;opacity:0.9;}
+.main{flex:1;display:flex;gap:20px;padding:30px;overflow:hidden;}
+.chat,.tools{
+  flex:1;background:#f0e6cc;border-radius:16px;
+  padding:20px;display:flex;flex-direction:column;
+}
+.chat h2,.tools h2{margin-top:0;font-size:20px;}
+.chat-box{
+  flex:1;overflow-y:auto;border:1px solid #d1c7a4;
+  border-radius:12px;padding:15px;background:#f7efd8;
+}
+.msg{max-width:75%;margin:8px 0;padding:10px 12px;
+  border-radius:10px;line-height:1.4;}
+.user{background:#2e5d3a;color:white;margin-left:auto;}
+.bot{background:#fff4d4;color:#2e2e2e;}
+.chat-input{display:flex;align-items:center;margin-top:10px;gap:5px;}
+.chat-input input{
+  flex:1;padding:10px;border-radius:8px;
+  border:1px solid #bfae7e;outline:none;
+}
+.chat-input button{
+  background:#2e5d3a;border:none;color:white;
+  padding:10px 14px;border-radius:8px;cursor:pointer;
+}
+.tools select,.tools button{
+  width:100%;margin:10px 0;padding:10px;
+  border-radius:8px;border:1px solid #bfae7e;background:white;
+}
+.tools button{background:#2e5d3a;color:white;cursor:pointer;}
+.upload{margin-top:15px;}
+input[type="file"]{
+  background:white;border:1px solid #bfae7e;padding:10px;
+  border-radius:8px;width:100%;
+}
+img.preview{margin-top:10px;border-radius:10px;max-width:100%;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h1>🌾 Agro Bot</h1>
+  <small>AI Assistant for Indian Farmers</small>
+  <button id="offlineBtn">📡 Offline/SMS Mode</button>
+  <button onclick="showChat()">💬 Chat</button>
+  <button onclick="showTools()">🧭 Crop Tools</button>
+  <button onclick="logout()">↩ Log Out</button>
+  <div class="bottom" id="status">🟢 Online</div>
+</div>
+
+<div class="main">
+  <div class="chat" id="chatPanel">
+    <h2>Chat with Agro Bot</h2>
+    <div class="chat-box" id="chatBox">
+      <div class="msg bot">👋 నమస్కారం! / नमस्ते! / Hello!  
+      I can answer about irrigation, fertilizers, soil, crops, weather, and more.  
+      Choose your language and start speaking 🎙️</div>
+    </div>
+
+    <div class="chat-input">
+      <input id="userInput" placeholder="Ask or speak your question...">
+      <button onclick="sendMessage()">Send</button>
+      <button onclick="startListening()">🎤 Speak</button>
+      <select id="langSelect" onchange="setLanguage(this.value)">
+        <option value="en-IN">English 🇬🇧</option>
+        <option value="hi-IN">Hindi 🇮🇳</option>
+        <option value="te-IN">Telugu 🇮🇳</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="tools" id="toolsPanel" style="display:none;">
+    <h2>Soil & Crop Suggestions</h2>
+    <label>Soil Type</label>
+    <select id="soil">
+      <option>Alluvial</option><option>Black</option><option>Red</option>
+      <option>Laterite</option><option>Arid</option><option>Mountain</option>
+      <option>Peaty</option><option>Sandy</option><option>Clay</option>
+      <option>Loamy</option>
+    </select>
+    <label>Month</label>
+    <select id="month">
+      <option>January</option><option>March</option><option>June</option>
+      <option>September</option><option>December</option>
+    </select>
+    <label>Region/State</label>
+    <select id="region">
+      <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+      <option>Bihar</option><option>Chhattisgarh</option><option>Goa</option>
+      <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+      <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+      <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
+      <option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option>
+      <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+      <option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+      <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
+      <option>West Bengal</option><option>Delhi</option><option>Puducherry</option>
+      <option>Ladakh</option><option>Jammu & Kashmir</option><option>Chandigarh</option>
+    </select>
+    <button onclick="showSuggestion()">Show Suggestions</button>
+    <p id="suggestResult"></p>
+    <div class="upload">
+      <h3>Upload Crop/Soil Image</h3>
+      <input type="file" id="fileUpload" accept="image/*,video/*">
+      <img id="preview" class="preview" style="display:none;">
+    </div>
+  </div>
+</div>
+
+
+<script>
+const chatBox = document.getElementById("chatBox");
+const userInput = document.getElementById("userInput");
+const statusEl = document.getElementById("status");
+const chatPanel = document.getElementById("chatPanel");
+const toolsPanel = document.getElementById("toolsPanel");
+
+let currentLang = "en-IN";
+
+function sendMessage() {
+    const text = userInput.value.trim();
+
+    if (!text) return;
+
+    addMsg(text, "user");
+    userInput.value = "";
+
+    generateReply(text);
+}
+
+async function addMsg(text, type) {
+    const msg = document.createElement("div");
+    msg.className = "msg " + type;
+
+    msg.textContent = text;
+
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    if (type === "bot") {
+        speakText(text);
+    }
+}
+
+async function generateReply(text) {
+    try {
+        const response = await fetch("http://127.0.0.1:10000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: text
+            })
+        });
+
+        const data = await response.json();
+
+        addMsg(data.reply, "bot");
+
+    } catch (error) {
+        console.error(error);
+        addMsg("⚠️ AgroBot backend not responding", "bot");
+    }
+}
+
+function showSuggestion() {
+    const soil = document.getElementById("soil").value;
+    const month = document.getElementById("month").value;
+    const region = document.getElementById("region").value;
+
+    const out = document.getElementById("suggestResult");
+
+    let suggestion = "";
+
+    if (["June", "July", "August", "September"].includes(month)) {
+        suggestion = "Kharif crops: Rice, Maize, Cotton, Soyabean.";
+    } else if (["November", "December", "January"].includes(month)) {
+        suggestion = "Rabi crops: Wheat, Mustard, Peas, Gram.";
+    } else {
+        suggestion = "Zaid crops: Cucumber, Watermelon, Muskmelon.";
+    }
+
+    out.textContent =
+        `In ${region}, ${soil} soil is suitable for ${suggestion}`;
+}
+
+document.getElementById("offlineBtn").onclick = () => {
+    statusEl.textContent =
+        statusEl.textContent.includes("Online")
+            ? "🔴 Offline (SMS Mode)"
+            : "🟢 Online";
+};
+
+function logout() {
+    alert("Logging out...");
+    location.reload();
+}
+
+function showChat() {
+    chatPanel.style.display = "flex";
+    toolsPanel.style.display = "none";
+}
+
+function showTools() {
+    chatPanel.style.display = "none";
+    toolsPanel.style.display = "flex";
+}
+
+document.getElementById("fileUpload").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (ev) => {
+        const img = document.getElementById("preview");
+
+        img.src = ev.target.result;
+        img.style.display = "block";
+    };
+
+    reader.readAsDataURL(file);
+});
+
+function setLanguage(lang) {
+    currentLang = lang;
+}
+
+function startListening() {
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("Speech Recognition not supported.");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = currentLang;
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+
+        addMsg(transcript, "user");
+        generateReply(transcript);
+    };
+
+    recognition.onerror = function() {
+        alert("Voice recognition error.");
+    };
+}
+
+function speakText(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    utterance.lang = currentLang;
+    speechSynthesis.speak(utterance);
+}
+</script>
+</script>
+</body>
+</html>

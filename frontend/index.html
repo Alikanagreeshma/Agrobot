@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="header">AgroBot - AI-Powered Smart Farming Assistant</title>
+    <meta name="description" content="AI-powered smart farming assistant providing crop recommendations, fertilizer guidance, irrigation tips, and more.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-brand">
+                🌾 AgroBot
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features" data-i18n="nav_features">Features</a></li>
+                <li><a href="#how-it-works" data-i18n="nav_about">About</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+            </ul>
+            <div class="nav-cta">
+                <select id="languageSelector" onchange="changeLanguage(this.value)" style="padding: 0.5rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; background: white;">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="te">తెలుగు</option>
+                </select>
+                <a href="chat.html" class="btn btn-primary btn-small" data-i18n="nav_chat">Chat</a>
+                <a href="dashboard.html" class="btn btn-secondary btn-small" data-i18n="nav_dashboard">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 data-i18n="hero_tagline">AI-Powered Smart Farming Assistant</h1>
+            <p class="tagline" data-i18n="hero_description">Get instant farming advice powered by AI. Crop recommendations, fertilizer guidance, irrigation tips, and more.</p>
+            <div class="hero-actions">
+                <a href="chat.html" class="btn btn-primary btn-large" data-i18n="cta_get_started">Get Started</a>
+                <a href="#features" class="btn btn-secondary btn-large" data-i18n="cta_learn_more">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="light">
+        <div class="container">
+            <h2 class="text-center" data-i18n="features">Features</h2>
+            <p class="text-center text-muted" style="max-width: 600px; margin: 1rem auto 3rem;">Comprehensive AI-powered solutions for modern agriculture</p>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Crop Recommendations</h3>
+                    <p>Get personalized crop suggestions based on season, soil, and climate conditions</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🧪</div>
+                    <h3>Fertilizer Guidance</h3>
+                    <p>Optimal NPK ratios and organic fertilizer recommendations for your crops</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💧</div>
+                    <h3>Irrigation Management</h3>
+                    <p>Smart irrigation scheduling and water management techniques</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🐛</div>
+                    <h3>Pest Management</h3>
+                    <p>Integrated pest management strategies and disease control methods</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Soil Health</h3>
+                    <p>Soil testing recommendations and health improvement techniques</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Voice Support</h3>
+                    <p>Hands-free voice input and audio responses while working in the field</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="green">
+        <div class="container">
+            <h2 class="text-center" style="margin-bottom: 3rem;">Key Benefits</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="benefits-item">
+                    <div class="benefits-icon">📈</div>
+                    <div class="benefits-content">
+                        <h4>Increase Yield</h4>
+                        <p>Optimize farming practices to maximize crop production and profitability</p>
+                    </div>
+                </div>
+                
+                <div class="benefits-item">
+                    <div class="benefits-icon">💰</div>
+                    <div class="benefits-content">
+                        <h4>Reduce Costs</h4>
+                        <p>Smart resource management and waste reduction minimize operational expenses</p>
+                    </div>
+                </div>
+                
+                <div class="benefits-item">
+                    <div class="benefits-icon">♻️</div>
+                    <div class="benefits-content">
+                        <h4>Sustainable Farming</h4>
+                        <p>Environmental-friendly practices that preserve soil and water resources</p>
+                    </div>
+                </div>
+                
+                <div class="benefits-item">
+                    <div class="benefits-icon">📱</div>
+                    <div class="benefits-content">
+                        <h4>Always Available</h4>
+                        <p>24/7 AI-powered support accessible from anywhere on your device</p>
+                    </div>
+                </div>
+                
+                <div class="benefits-item">
+                    <div class="benefits-icon">🌐</div>
+                    <div class="benefits-content">
+                        <h4>Multilingual Support</h4>
+                        <p>Access farming advice in your preferred language - English, Hindi, and Telugu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works">
+        <div class="container">
+            <h2 class="text-center" data-i18n="how_it_works">How It Works</h2>
+            <p class="text-center text-muted" style="max-width: 600px; margin: 1rem auto 3rem;">Simple steps to get farming advice</p>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h4>Ask a Question</h4>
+                    <p>Simply type or speak your farming question in the chat interface</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h4>Get AI Response</h4>
+                    <p>Our AI analyzes your question and provides relevant farming advice</p>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h4>Apply Recommendations</h4>
+                    <p>Implement the suggestions and track results for better outcomes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="light">
+        <div class="container">
+            <h2 class="text-center">Technologies Used</h2>
+            <p class="text-center text-muted" style="margin-bottom: 2rem;">Built with modern web and AI technologies</p>
+            
+            <div class="tech-stack">
+                <span class="tech-badge">Flask Backend</span>
+                <span class="tech-badge">Python AI</span>
+                <span class="tech-badge">Web Speech API</span>
+                <span class="tech-badge">HTML5</span>
+                <span class="tech-badge">CSS3</span>
+                <span class="tech-badge">JavaScript</span>
+                <span class="tech-badge">REST API</span>
+                <span class="tech-badge">Responsive Design</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section>
+        <div class="container">
+            <h2 class="text-center">About AgroBot</h2>
+            <p class="text-center text-muted" style="max-width: 700px; margin: 1rem auto 3rem; font-size: 1.1rem;">
+                AgroBot is an AI-powered smart farming assistant designed to help farmers make informed decisions. 
+                Whether you're a beginner or an experienced farmer, AgroBot provides personalized recommendations 
+                for crop selection, fertilizer use, irrigation management, and pest control.
+            </p>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-member-avatar">🌾</div>
+                    <h4>Agriculture Expert</h4>
+                    <p class="role">Expert Knowledge Base</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Decades of farming expertise compiled into AI recommendations</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="team-member-avatar">🤖</div>
+                    <h4>AI Technology</h4>
+                    <p class="role">Machine Learning</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Advanced algorithms providing personalized farming solutions</p>
+                </div>
+                
+                <div class="team-member">
+                    <div class="team-member-avatar">🌐</div>
+                    <h4>24/7 Support</h4>
+                    <p class="role">Always Available</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Instant access to farming advice whenever you need it</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="light">
+        <div class="container">
+            <h2 class="text-center" data-i18n="contact">Contact Us</h2>
+            <p class="text-center text-muted" style="margin-bottom: 2rem;">Get in touch with our team</p>
+            
+            <form class="contact-form" onsubmit="handleContactSubmit(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-section">
+                <h4 data-i18n="footer_about">About AgroBot</h4>
+                <ul>
+                    <li><a href="#" data-i18n="nav_about">About Us</a></li>
+                    <li><a href="#features" data-i18n="nav_features">Features</a></li>
+                    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4 data-i18n="footer_company">Company</h4>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4 data-i18n="footer_support">Support</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Contact Support</a></li>
+                    <li><a href="#">Documentation</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4 data-i18n="footer_legal">Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p data-i18n="copyright">© 2024 AgroBot. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/language-manager.js"></script>
+    <script src="js/api-client.js"></script>
+    
+    <script>
+        // Initialize language manager
+        languageManager.updatePageLanguage();
+
+        // Change language
+        function changeLanguage(lang) {
+            languageManager.setLanguage(lang);
+            document.getElementById('languageSelector').value = lang;
+        }
+
+        // Handle contact form submission
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+            
+            // In production, send this data to a backend service
+            console.log('Contact form submitted:', formData);
+            
+            showNotification('Thank you for contacting us! We will get back to you soon.', 'success');
+            event.target.reset();
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
